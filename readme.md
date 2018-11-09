@@ -8,10 +8,12 @@ create server node js for upload file, json post, get
 
 
 # Tao server.js de tao node 
-1. npm install http fs url formidable path
+1. npm install http fs url formidable path os
 - http la server
 - fs la doi tuong doc, ghi xuong dia
 - url la doi tuong xu ly url 
 - formidable la doi tuong xu ly formdata de lay du lieu tu form 
+- path la doi tuong lay duong dan he thong
+- os la doi tuong lay thong tin he thong
 2. Tao file sever.js thuc hien phuong thuc post, get cua http
 

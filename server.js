@@ -4,6 +4,8 @@ var fs = require('fs');
 var url = require('url');
 var formidable = require('formidable');
 var systempath = require('path');
+var os = require('os');
+var tempdir = os.tmpdir();
 
 // Create http server.
 var httpServer = http.createServer(function (req, resp) {
@@ -11,8 +13,12 @@ var httpServer = http.createServer(function (req, resp) {
     // Get client request url.
     var reqUrlString = req.url;
 
+    //console.log(reqUrlString);
+
     // Get client request path name.
     var pathName = url.parse(reqUrlString, true, false).pathname;
+
+    //console.log(pathName);
 
     var method = req.method;
 
@@ -20,7 +26,7 @@ var httpServer = http.createServer(function (req, resp) {
     if ("POST" == method) {
 
         //neu duong dan post co ten la upload file thi xu ly upload
-        if (req.url == '/fileupload') {
+        if (pathName == '/fileupload') {
             var form = new formidable.IncomingForm();
             //luu tru file vao dia 
             form.parse(req, function (err, fields, files) {
@@ -29,7 +35,7 @@ var httpServer = http.createServer(function (req, resp) {
                 ///////////////////////////////////////////////
                 //'uploadfiles/' 
                 resp.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
-                
+
                 //luu vao thu muc cua lap trinh uploadfiles
                 var newpath = 'uploadfiles/' + files.filetoupload.name;
                 fs.rename(oldpath, newpath, function (err) {
@@ -54,7 +60,6 @@ var httpServer = http.createServer(function (req, resp) {
         } else {
             //neu duong dan khac thi xu ly post binh thuong
             var postData = '';
-
             // Get all post data when receive data event.
             req.on('data', (chunk) => {
                 postData += chunk;
@@ -76,7 +81,7 @@ var httpServer = http.createServer(function (req, resp) {
         }
     } else if ("GET" == method) {
 
-        if (req.url == '/testupload') {
+        if (pathName == '/testupload') {
 
             resp.writeHead(200, { 'Content-Type': 'text/html' });
             resp.write('<form action="fileupload" method="post" enctype="multipart/form-data">');
@@ -86,9 +91,12 @@ var httpServer = http.createServer(function (req, resp) {
 
             return resp.end();
 
+
+        } else if (pathName.indexOf('/tmp') >= 0) {
+
+            console.log(pathName);
+
         } else {
-
-
             // get
             var reqUrlString = req.url;
             var urlObject = url.parse(reqUrlString, true, false);
@@ -98,8 +106,10 @@ var httpServer = http.createServer(function (req, resp) {
             fileName = fileName.substr(1);
 
             // Read the file content and return to client when read complete.
-            fs.readFile(fileName, { encoding: 'utf-8', flag: 'r' }, function (error, data) {
+            //doc file tu thu muc var tempdir = os.tmpdir();
+            //,'Content-Type': contentType 
 
+            fs.readFile(fileName, { encoding: 'utf-8', flag: 'r' }, function (error, data) {
                 if (!error) {
                     resp.writeHead(200, { 'Access-Control-Allow-Origin': '*' });
                     resp.end(data);
@@ -119,4 +129,4 @@ var PORT = process.env.PORT || 8888;
 
 httpServer.listen(PORT);
 
-console.log("Server is started with : " + PORT);
+console.log("Server (" + os.platform() + "; " + os.arch() + ") is started with : " + PORT + " tempdir:" + os.tmpdir());

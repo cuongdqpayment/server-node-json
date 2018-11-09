@@ -1,0 +1,19 @@
+{
+  "name": "server-node-json",
+  "version": "1.0.0",
+  "description": "Server for upload file test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cuongdqpayment/server-node-json.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cuongdqpayment/server-node-json/issues"
+  },
+  "homepage": "https://github.com/cuongdqpayment/server-node-json#readme"
+}

@@ -6,6 +6,8 @@ var formidable = require('formidable');
 var systempath = require('path');
 var os = require('os');
 var tempdir = os.tmpdir();
+var mime = require('mime-types');
+
 
 // Create http server.
 var httpServer = http.createServer(function (req, resp) {
@@ -92,9 +94,22 @@ var httpServer = http.createServer(function (req, resp) {
             return resp.end();
 
 
-        } else if (pathName.indexOf('/tmp') >= 0) {
+        } else if (pathName.indexOf('/tmp/') >= 0) {
 
-            console.log(pathName);
+            var fileRead = tempdir + '/' + pathName.substring(pathName.lastIndexOf(systempath.sep)+1);
+            var contentType = 'image/jpeg';
+            if (mime.lookup(pathName)) contentType = mime.lookup(pathName);
+            //console.log("contentType = "  + contentType);
+            //load image
+            fs.readFile(fileRead, { flag: 'r' }, function (error, data) {
+                if (!error) {
+                    resp.writeHead(200, { 'Access-Control-Allow-Origin': '*','Content-Type': contentType});
+                    resp.end(data);
+                } else {
+                    resp.writeHead(404, { 'Access-Control-Allow-Origin': '*' });
+                    resp.end(JSON.stringify(error));
+                }
+            });
 
         } else {
             // get

@@ -6,3 +6,12 @@ create server node js for upload file, json post, get
 5. git remote add origin https://github.com/cuongdqpayment/server-node-json.git
 6. git push -u origin master
 
+
+# Tao server.js de tao node 
+1. npm install http fs url formidable path
+- http la server
+- fs la doi tuong doc, ghi xuong dia
+- url la doi tuong xu ly url 
+- formidable la doi tuong xu ly formdata de lay du lieu tu form 
+2. Tao file sever.js thuc hien phuong thuc post, get cua http
+
